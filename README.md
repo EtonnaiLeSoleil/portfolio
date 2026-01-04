@@ -23,4 +23,12 @@ Puis ouvre :
 - http://localhost:8000/login.php
 
 ## Connexion admin
-Utilise l'email présent dans la table `user` et le mot de passe correspondant au hash déjà en base.
+pour accéder a la page admin,
+ouvrée ce lien la :
+- http://localhost:8000/login.php
+
+Email: 
+exemple@antoinegouet.com
+
+Mp:
+P0rtf8l10dEMé4P3

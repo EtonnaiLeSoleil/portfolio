@@ -1,0 +1,164 @@
+<?php
+/**
+ * @var array $currentUser
+ * @var array $projects
+ * @var array $messages
+ * @var array|null $projectToEdit
+ * @var string|null $notice
+ * @var string|null $error
+ */
+?>
+<main class="container">
+
+  <?php if ($notice): ?>
+    <div class="notice success"><?= e($notice); ?></div>
+  <?php endif; ?>
+
+  <?php if ($error): ?>
+    <div class="notice error"><?= e($error); ?></div>
+  <?php endif; ?>
+
+  <section>
+    <h2>Infos personnelles</h2>
+    <form method="post" class="card" novalidate>
+      <input type="hidden" name="_csrf" value="<?= e(csrf_token()); ?>">
+      <input type="hidden" name="action" value="update_profile">
+
+      <label for="job_title">Job title</label>
+      <input id="job_title" name="job_title" type="text" required value="<?= e($currentUser['job_title'] ?? ''); ?>">
+
+      <label for="bio">Bio</label>
+      <textarea id="bio" name="bio"><?= e($currentUser['bio'] ?? ''); ?></textarea>
+
+      <label for="cv_url">CV URL</label>
+      <input id="cv_url" name="cv_url" type="text" value="<?= e($currentUser['cv_url'] ?? ''); ?>">
+
+      <button class="btn" type="submit">Enregistrer</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Projets</h2>
+
+    <?php if ($projectToEdit): ?>
+      <h3>Modifier un projet</h3>
+      <form method="post" class="card" novalidate>
+        <input type="hidden" name="_csrf" value="<?= e(csrf_token()); ?>">
+        <input type="hidden" name="action" value="update_project">
+        <input type="hidden" name="id_project" value="<?= (int)$projectToEdit['id_project']; ?>">
+
+        <label for="title_e">Titre</label>
+        <input id="title_e" name="title" type="text" required value="<?= e($projectToEdit['title']); ?>">
+
+        <label for="description_e">Description</label>
+        <textarea id="description_e" name="description" required><?= e($projectToEdit['description']); ?></textarea>
+
+        <label for="link_url_e">Lien</label>
+        <input id="link_url_e" name="link_url" type="text" value="<?= e($projectToEdit['link_url'] ?? ''); ?>">
+
+        <label for="image_url_e">Image URL</label>
+        <input id="image_url_e" name="image_url" type="text" value="<?= e($projectToEdit['image_url'] ?? ''); ?>">
+
+        <label for="skill_list_e">Skills (séparées par virgules)</label>
+        <input id="skill_list_e" name="skill_list" type="text" required value="<?= e($projectToEdit['skill_list']); ?>">
+
+        <button class="btn" type="submit">Mettre à jour</button>
+        <a class="btn" href="admin.php">Annuler</a>
+      </form>
+    <?php else: ?>
+      <h3>Ajouter un projet</h3>
+      <form method="post" class="card" novalidate>
+        <input type="hidden" name="_csrf" value="<?= e(csrf_token()); ?>">
+        <input type="hidden" name="action" value="create_project">
+
+        <label for="title">Titre</label>
+        <input id="title" name="title" type="text" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="link_url">Lien</label>
+        <input id="link_url" name="link_url" type="text">
+
+        <label for="image_url">Image URL</label>
+        <input id="image_url" name="image_url" type="text">
+
+        <label for="skill_list">Skills (séparées par virgules)</label>
+        <input id="skill_list" name="skill_list" type="text" required>
+
+        <button class="btn" type="submit">Ajouter</button>
+      </form>
+    <?php endif; ?>
+
+    <h3>Liste des projets</h3>
+    <div class="card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Skills</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($projects as $p): ?>
+          <tr>
+            <td>
+              <strong><?= e($p['title']); ?></strong>
+              <div class="muted"><?= e(mb_strimwidth($p['description'], 0, 120, '…')); ?></div>
+            </td>
+            <td><?= e($p['skill_list']); ?></td>
+            <td>
+              <a class="btn" href="admin.php?edit_project=<?= (int)$p['id_project']; ?>">Modifier</a>
+              <form method="post" style="display:inline" onsubmit="return confirm('Supprimer ce projet ?');">
+                <input type="hidden" name="_csrf" value="<?= e(csrf_token()); ?>">
+                <input type="hidden" name="action" value="delete_project">
+                <input type="hidden" name="id_project" value="<?= (int)$p['id_project']; ?>">
+                <button class="btn" type="submit">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Messages</h2>
+    <div class="card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Sujet</th>
+            <th>Message</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($messages as $m): ?>
+          <tr>
+            <td><?= e($m['email']); ?></td>
+            <td><?= e($m['subject']); ?></td>
+            <td class="muted"><?= nl2br(e($m['message'])); ?></td>
+            <td>
+              <?php if ((int)$m['is_read'] === 1): ?>
+                <span class="badge">Lu</span>
+              <?php else: ?>
+                <form method="post" style="display:inline">
+                  <input type="hidden" name="_csrf" value="<?= e(csrf_token()); ?>">
+                  <input type="hidden" name="action" value="mark_read">
+                  <input type="hidden" name="id_message" value="<?= (int)$m['id_message']; ?>">
+                  <button class="btn" type="submit">Marquer lu</button>
+                </form>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>

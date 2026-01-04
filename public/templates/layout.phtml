@@ -1,0 +1,37 @@
+<?php
+/** @var string $content */
+/** @var string|null $pageTitle */
+/** @var string|null $brandTitle */
+/** @var array<int, array{href:string,label:string}>|null $navLinks */
+
+$brandTitle = $brandTitle ?? 'Portfolio';
+$navLinks = $navLinks ?? [
+  ['href' => '#profil', 'label' => 'Profil'],
+  ['href' => '#projets', 'label' => 'Projets'],
+  ['href' => '#contact', 'label' => 'Contact'],
+];
+?>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?= e($pageTitle ?? 'Portfolio'); ?></title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <h1><?= e($brandTitle); ?></h1>
+    <nav>
+      <?php foreach ($navLinks as $link): ?>
+        <a href="<?= e($link['href']); ?>"><?= e($link['label']); ?></a>
+      <?php endforeach; ?>
+    </nav>
+  </div>
+</header>
+
+<?= $content; ?>
+
+</body>
+</html>

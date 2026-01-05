@@ -11,6 +11,9 @@
 ## Configuration
 Ajuste les identifiants dans `config.php` (valeurs par défaut MAMP: `root/root`, port `8889`).
 
+## Fichiers
+- Le CV est servi depuis `uploads/` (ex: `uploads/Antoine-Gouet-CV.pdf`).
+
 ## Lancer en local
 Depuis le dossier du projet :
 
@@ -23,12 +26,9 @@ Puis ouvre :
 - http://localhost:8000/login.php
 
 ## Connexion admin
-pour accéder a la page admin,
-ouvrée ce lien la :
+Pour accéder à la page d'administration :
 - http://localhost:8000/login.php
 
-Email: 
-exemple@antoinegouet.com
-
-Mp:
-P0rtf8l10dEMé4P3
+Identifiants fournis par défaut (seed dans `portfolio.sql`) :
+- Email : antoine.gouet0706@hotmail.com
+- Mot de passe : P0rtf8l10dEMé4P3

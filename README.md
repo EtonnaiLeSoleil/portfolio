@@ -30,5 +30,5 @@ Pour accéder à la page d'administration :
 - http://localhost:8000/login.php
 
 Identifiants fournis par défaut (seed dans `portfolio.sql`) :
-- Email : antoine.gouet0706@hotmail.com
-- Mot de passe : P0rtf8l10dEMé4P3
+- Email : Admin@admin.admin
+- Mot de passe : P0rtf8l10MAG1qu3

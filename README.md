@@ -9,15 +9,21 @@
 2. Importe `portfolio.sql`.
 
 ## Configuration
-Ajuste les identifiants dans `config.php` (valeurs par défaut MAMP: `root/root`, port `8889`).
+Ajuste les identifiants dans `app/config/config.php` (valeurs par défaut MAMP: `root/root`, port `8889`).
+Un fichier d'exemple est disponible dans `app/config/config.example.php`.
 
 ## Fichiers
-- Le CV est servi depuis `uploads/` (ex: `uploads/Antoine-Gouet-CV.pdf`).
+- Le CV est servi depuis `public/uploads/`.
+- Le site est accessible via le dossier `public/`.
 
 ## Lancer en local
 Depuis le dossier du projet :
 
 ```bash
+php -S localhost:8000 -t public
+```
+
+Ouvre ton navigateur sur `http://localhost:8000`.
 php -S localhost:8000
 ```
 

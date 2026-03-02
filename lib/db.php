@@ -10,7 +10,7 @@ function db(): PDO
         return $pdo;
     }
 
-    $config = require __DIR__ . '/../config.php';
+    $config = require __DIR__ . '/../app/config/config.php';
     $db = $config['db'];
 
     $dsn = sprintf(

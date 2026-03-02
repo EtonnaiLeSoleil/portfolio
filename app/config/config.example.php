@@ -1,6 +1,6 @@
 <?php
-// Configuration locale (simple, sans framework).
-// Ajuste ces valeurs selon ton MySQL/MAMP.
+// Configuration locale (Exemple).
+// Ajuste ces valeurs selon votre MySQL/MAMP.
 
 declare(strict_types=1);
 
@@ -14,3 +14,4 @@ return [
         'charset' => 'utf8mb4',
     ],
 ];
+

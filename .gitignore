@@ -1,3 +1,4 @@
 /app/config/config.php
 /public/uploads/
 .DS_Store
+.env

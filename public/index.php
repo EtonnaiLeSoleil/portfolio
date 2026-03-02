@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 render('home', [
-    'pageTitle' => 'Portfolio',
-    'brandTitle' => 'Portfolio',
+    'pageTitle' => 'Accueil - Mon Portfolio',
+    'brandTitle' => 'Mon Portfolio',
     'navLinks' => [
         ['href' => '#profil', 'label' => 'Profil'],
         ['href' => '#projets', 'label' => 'Projets'],

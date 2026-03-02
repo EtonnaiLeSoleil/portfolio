@@ -9,8 +9,19 @@
 2. Importe `portfolio.sql`.
 
 ## Configuration
-Ajuste les identifiants dans `app/config/config.php` (valeurs par défaut MAMP: `root/root`, port `8889`).
-Un fichier d'exemple est disponible dans `app/config/config.example.php`.
+Il faut créer un fichier `.env` à la racine du projet et le remplir avec tes propres paramètres de base de données.
+Voici un exemple de contenu à adapter :
+
+```ini
+DB_HOST=127.0.0.1
+DB_PORT=8889
+DB_NAME=portfolio
+DB_USER=root
+DB_PASS=root
+DB_CHARSET=utf8mb4
+```
+
+Un fichier `config.php` charge ces variables, ou utilise des valeurs par défaut si le `.env` est absent.
 
 ## Fichiers
 - Le CV est servi depuis `public/uploads/`.

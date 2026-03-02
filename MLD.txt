@@ -1,0 +1,10 @@
+user(id_user, email, password_hash, job_title, bio, cv_url)
+
+project(id_project, title, description, link_url, image_url)
+
+skill(id_skill, name)
+
+project_skill(#id_project, #id_skill)
+
+contact_message(id_message, email, subject, message, is_read)
+

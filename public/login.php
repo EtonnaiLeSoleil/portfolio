@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 render('login', [
-    'pageTitle' => 'Connexion',
+    'pageTitle' => 'Connexion - Mon Portfolio',
     'brandTitle' => 'Admin',
     'navLinks' => [
         ['href' => 'index.php', 'label' => 'Retour'],

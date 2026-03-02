@@ -5,69 +5,179 @@
  * @var string|null $notice
  * @var string|null $error
  */
+// Utilisation des données réelles de la base de données
 ?>
-<main class="container">
 
-  <section id="profil">
-    <h2>Profil</h2>
-    <div class="card">
-      <p><strong>Antoine Gouet, <?= e($user['job_title'] ?? ''); ?></strong></p>
-      <p class="muted"><?= nl2br(e($user['bio'] ?? '')); ?></p>
-      <?php if (!empty($user['cv_url'])): ?>
-        <p><a href="uploads/<?= e($user['cv_url']); ?>" target="_blank" rel="noopener">Télécharger le CV</a></p>
-      <?php endif; ?>
+<!-- Hero Section -->
+<section class="home-hero">
+    <div class="home-hero__content">
+        <h1 class="heading-primary">Bonjour,</h1>
+        <h1 class="heading-primary">Je suis Antoine Gouet.</h1>
+        <p class="text-primary"><?= e($user['job_title'] ?? 'Développeur Web'); ?></p>
+        <div class="home-hero__cta">
+            <a href="#projects" class="btn btn--bg btn--theme">Mes Projets</a>
+        </div>
     </div>
-  </section>
-
-  <section id="projets">
-    <h2>Projets</h2>
-    <div class="grid grid-2">
-      <?php foreach ($projects as $p): ?>
-        <article class="card">
-          <?php if (!empty($p['image_url'])): ?>
-            <img class="project" src="<?= e($p['image_url']); ?>" alt="<?= e($p['title']); ?>">
-          <?php endif; ?>
-          <h3><?= e($p['title']); ?></h3>
-          <p class="muted"><?= nl2br(e($p['description'])); ?></p>
-          <?php if (!empty($p['link_url'])): ?>
-            <p><a href="<?= e($p['link_url']); ?>" target="_blank" rel="noopener">Voir le projet</a></p>
-          <?php endif; ?>
-          <p>
-            <?php
-              $skills = array_filter(array_map('trim', explode(',', (string) $p['skill_list'])));
-              foreach ($skills as $s) {
-                  echo '<span class="badge">' . e($s) . '</span>';
-              }
-            ?>
-          </p>
-        </article>
-      <?php endforeach; ?>
+    
+    <div class="home-hero__mouse-scroll-cont">
+        <div class="mouse"></div>
     </div>
-  </section>
+</section>
 
-  <section id="contact">
-    <h2>Contact</h2>
+<!-- About Section -->
+<section id="about" class="about sec-pad">
+    <div class="main-container">
+    <h2 class="heading heading-sec heading-sec__mb-med">
+        <span class="heading-sec__main">À propos de moi</span>
+        <span class="heading-sec__sub">
+        Découvrez mon parcours et mes compétences.
+        </span>
+    </h2>
+    <div class="about__content">
+        <div class="about__content-main">
+        <div class="about__content-details">
+            <p class="about__content-details-para">
+            <?= nl2br(e($user['bio'] ?? 'Passionné de code et de nouvelles technologies.')); ?>
+            </p>
+        </div>
+        
+        <div class="about__buttons">
+            <a href="#contact" class="btn btn--med btn--theme dynamicBgClr">Contact</a>
+            <?php if (!empty($user['cv_url'])): ?>
+                <a href="uploads/<?= e($user['cv_url']); ?>" class="btn btn--med btn--theme dynamicBgClr" target="_blank">CV</a>
+            <?php endif; ?>
+        </div>
+        </div>
+        <div class="about__content-skills">
+        <h3 class="about__content-title">Mes Compétences</h3>
+        <div class="skills">
+            <div class="skills__skill">HTML5</div>
+            <div class="skills__skill">CSS3 / SCSS</div>
+            <div class="skills__skill">JavaScript</div>
+            <div class="skills__skill">React.js</div>
+            <div class="skills__skill">PHP</div>
+            <div class="skills__skill">Symfony</div>
+            <div class="skills__skill">MySQL / MariaDB</div>
+            <div class="skills__skill">WordPress</div>
+            <div class="skills__skill">Git / GitHub</div>
+            <div class="skills__skill">Docker</div>
+            <div class="skills__skill">Figma</div>
+            <div class="skills__skill">Méthodes Agiles</div>
+        </div>
+        </div>
+    </div>
+    </div>
+</section>
 
-    <?php if ($notice): ?>
-      <div class="notice success"><?= e($notice); ?></div>
-    <?php endif; ?>
+<!-- Projects Section -->
+<section id="projects" class="projects sec-pad">
+    <div class="main-container">
+    <h2 class="heading heading-sec heading-sec__mb-bg">
+        <span class="heading-sec__main">Projets</span>
+        <span class="heading-sec__sub">
+        Voici quelques-uns des projets sur lesquels j'ai travaillé.
+        </span>
+    </h2>
+    
+    <div class="projects__content">
+        <?php foreach ($projects as $p): ?>
+            <div class="projects__row">
+                <div class="projects__row-img-cont">
+                    <?php 
+                        $imgSrc = !empty($p['image_url']) ? $p['image_url'] : 'https://placehold.co/600x400'; 
+                    ?>
+                    <img
+                    src="<?= e($imgSrc); ?>"
+                    alt="Capture du projet"
+                    class="projects__row-img"
+                    loading="lazy"
+                    />
+                </div>
+                <div class="projects__row-content">
+                    <h3 class="projects__row-content-title"><?= e($p['title']); ?></h3>
+                    <p class="projects__row-content-desc">
+                    <?= nl2br(e($p['description'])); ?>
+                    </p>   
+                    
+                    <?php if(!empty($p['skill_list'])): ?>
+                    <div style="margin-bottom: 2rem; color: #666; font-size: 1.4rem;">
+                        <strong>Tech:</strong> <?= e(str_replace(',', ', ', $p['skill_list'])); ?>
+                    </div>
+                    <?php endif; ?>
 
-    <?php if ($error): ?>
-      <div class="notice error"><?= e($error); ?></div>
-    <?php endif; ?>
+                    <?php if (!empty($p['link_url'])): ?>
+                        <a
+                        href="<?= e($p['link_url']); ?>"
+                        class="btn btn--med btn--theme dynamicBgClr"
+                        target="_blank"
+                        >Voir le projet</a
+                        >
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-    <form method="post" class="card" novalidate>
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required value="<?= e($_POST['email'] ?? ''); ?>">
+    </div>
+</section>
 
-      <label for="subject">Sujet</label>
-      <input id="subject" name="subject" type="text" required value="<?= e($_POST['subject'] ?? ''); ?>">
+<!-- Contact Section -->
+<section id="contact" class="contact sec-pad dynamicBg">
+    <div class="main-container">
+    <h2 class="heading heading-sec heading-sec__mb-med">
+        <span class="heading-sec__main heading-sec__main--lt">Contact</span>
+        <span class="heading-sec__sub heading-sec__sub--lt">
+        N'hésitez pas à me contacter pour toute opportunité ou question.
+        </span>
+    </h2>
+    <div class="contact__form-container">
+        <?php if (!empty($notice)): ?>
+            <div style="background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.6rem;">
+                <?= e($notice); ?>
+            </div>
+        <?php endif; ?>
+        
+        <form action="index.php?contact=1#contact" method="POST" class="contact__form">
+            <?php if (function_exists('csrf_input')) echo csrf_input(); ?>
 
-      <label for="message">Message</label>
-      <textarea id="message" name="message" required><?= e($_POST['message'] ?? ''); ?></textarea>
-
-      <button class="btn" type="submit">Envoyer</button>
-    </form>
-  </section>
-
-</main>
+            <div class="contact__form-field">
+                <label class="contact__form-label" for="name">Nom</label>
+                <input
+                required
+                placeholder="Votre Nom"
+                type="text"
+                class="contact__form-input"
+                name="name"
+                id="name"
+                />
+            </div>
+            <div class="contact__form-field">
+                <label class="contact__form-label" for="email">Email</label>
+                <input
+                required
+                placeholder="Votre Email"
+                type="email"
+                class="contact__form-input"
+                name="email"
+                id="email"
+                />
+            </div>
+            <div class="contact__form-field">
+                <label class="contact__form-label" for="message">Message</label>
+                <textarea
+                required
+                cols="30"
+                rows="10"
+                class="contact__form-input"
+                placeholder="Votre Message"
+                name="message"
+                id="message"
+                ></textarea>
+            </div>
+            <button type="submit" class="btn btn--theme contact__btn">
+                Envoyer
+            </button>
+        </form>
+    </div>
+    </div>
+</section>

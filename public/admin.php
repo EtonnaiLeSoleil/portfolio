@@ -240,7 +240,7 @@ SQL;
 }
 
 render('admin', [
-    'pageTitle' => 'Admin',
+    'pageTitle' => 'Admin - Mon Portfolio',
     'brandTitle' => 'Admin',
     'navLinks' => [
         ['href' => 'index.php', 'label' => 'Site'],

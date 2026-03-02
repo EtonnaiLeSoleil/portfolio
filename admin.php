@@ -62,20 +62,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $description = trim((string)($_POST['description'] ?? ''));
             $linkUrl = trim((string)($_POST['link_url'] ?? ''));
             $imageUrl = trim((string)($_POST['image_url'] ?? ''));
-            $skillList = trim((string)($_POST['skill_list'] ?? ''));
+            $skillListInput = trim((string)($_POST['skill_list'] ?? ''));
 
-            if ($title === '' || $description === '' || $skillList === '') {
-                $error = 'Titre, description et skill_list sont obligatoires.';
+            if ($title === '' || $description === '') {
+                $error = 'Titre et description sont obligatoires.';
             } else {
-                $stmt = $pdo->prepare('INSERT INTO project (title, description, link_url, image_url, skill_list) VALUES (:title, :description, :link_url, :image_url, :skill_list)');
-                $stmt->execute([
-                    ':title' => $title,
-                    ':description' => $description,
-                    ':link_url' => ($linkUrl === '') ? null : $linkUrl,
-                    ':image_url' => ($imageUrl === '') ? null : $imageUrl,
-                    ':skill_list' => $skillList,
-                ]);
-                $notice = 'Projet ajouté.';
+                $pdo->beginTransaction();
+                try {
+                    // 1. Insert Project
+                    $stmt = $pdo->prepare('INSERT INTO project (title, description, link_url, image_url) VALUES (:title, :description, :link_url, :image_url)');
+                    $stmt->execute([
+                        ':title' => $title,
+                        ':description' => $description,
+                        ':link_url' => ($linkUrl === '') ? null : $linkUrl,
+                        ':image_url' => ($imageUrl === '') ? null : $imageUrl,
+                    ]);
+                    $projectId = (int)$pdo->lastInsertId();
+
+                    // 2. Handle Skills
+                    if ($skillListInput !== '') {
+                        $skills = array_filter(array_map('trim', explode(',', $skillListInput)));
+                        foreach ($skills as $skillName) {
+                            // Find or Create Skill
+                            $stmtSkill = $pdo->prepare('SELECT id_skill FROM skill WHERE name = :name LIMIT 1');
+                            $stmtSkill->execute([':name' => $skillName]);
+                            $existingSkill = $stmtSkill->fetch();
+
+                            if ($existingSkill) {
+                                $skillId = (int)$existingSkill['id_skill'];
+                            } else {
+                                $stmtInsertSkill = $pdo->prepare('INSERT INTO skill (name) VALUES (:name)');
+                                $stmtInsertSkill->execute([':name' => $skillName]);
+                                $skillId = (int)$pdo->lastInsertId();
+                            }
+
+                            // Link to Project
+                            $stmtLink = $pdo->prepare('INSERT INTO project_skill (project_id, skill_id) VALUES (:pid, :sid)');
+                            $stmtLink->execute([':pid' => $projectId, ':sid' => $skillId]);
+                        }
+                    }
+
+                    $pdo->commit();
+                    $notice = 'Projet ajouté.';
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    $error = 'Erreur lors de l\'ajout du projet : ' . $e->getMessage();
+                }
             }
         }
 
@@ -85,23 +117,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $description = trim((string)($_POST['description'] ?? ''));
             $linkUrl = trim((string)($_POST['link_url'] ?? ''));
             $imageUrl = trim((string)($_POST['image_url'] ?? ''));
-            $skillList = trim((string)($_POST['skill_list'] ?? ''));
+            $skillListInput = trim((string)($_POST['skill_list'] ?? ''));
 
             if ($idProject <= 0) {
                 $error = 'Projet invalide.';
-            } elseif ($title === '' || $description === '' || $skillList === '') {
-                $error = 'Titre, description et skill_list sont obligatoires.';
+            } elseif ($title === '' || $description === '') {
+                $error = 'Titre et description sont obligatoires.';
             } else {
-                $stmt = $pdo->prepare('UPDATE project SET title = :title, description = :description, link_url = :link_url, image_url = :image_url, skill_list = :skill_list WHERE id_project = :id');
-                $stmt->execute([
-                    ':title' => $title,
-                    ':description' => $description,
-                    ':link_url' => ($linkUrl === '') ? null : $linkUrl,
-                    ':image_url' => ($imageUrl === '') ? null : $imageUrl,
-                    ':skill_list' => $skillList,
-                    ':id' => $idProject,
-                ]);
-                $notice = 'Projet modifié.';
+                $pdo->beginTransaction();
+                try {
+                    // 1. Update Project
+                    $stmt = $pdo->prepare('UPDATE project SET title = :title, description = :description, link_url = :link_url, image_url = :image_url WHERE id_project = :id');
+                    $stmt->execute([
+                        ':title' => $title,
+                        ':description' => $description,
+                        ':link_url' => ($linkUrl === '') ? null : $linkUrl,
+                        ':image_url' => ($imageUrl === '') ? null : $imageUrl,
+                        ':id' => $idProject,
+                    ]);
+
+                    // 2. Clear existing skills for this project
+                    $stmtClear = $pdo->prepare('DELETE FROM project_skill WHERE project_id = :id');
+                    $stmtClear->execute([':id' => $idProject]);
+
+                    // 3. Re-add Skills
+                    if ($skillListInput !== '') {
+                        $skills = array_filter(array_map('trim', explode(',', $skillListInput)));
+                        foreach ($skills as $skillName) {
+                             // Find or Create Skill
+                             $stmtSkill = $pdo->prepare('SELECT id_skill FROM skill WHERE name = :name LIMIT 1');
+                             $stmtSkill->execute([':name' => $skillName]);
+                             $existingSkill = $stmtSkill->fetch();
+ 
+                             if ($existingSkill) {
+                                 $skillId = (int)$existingSkill['id_skill'];
+                             } else {
+                                 $stmtInsertSkill = $pdo->prepare('INSERT INTO skill (name) VALUES (:name)');
+                                 $stmtInsertSkill->execute([':name' => $skillName]);
+                                 $skillId = (int)$pdo->lastInsertId();
+                             }
+ 
+                             // Link to Project
+                             $stmtLink = $pdo->prepare('INSERT INTO project_skill (project_id, skill_id) VALUES (:pid, :sid)');
+                             $stmtLink->execute([':pid' => $idProject, ':sid' => $skillId]);
+                        }
+                    }
+                    $pdo->commit();
+                    $notice = 'Projet modifié.';
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    $error = 'Erreur lors de la modification : ' . $e->getMessage();
+                }
             }
         }
 
@@ -110,6 +176,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($idProject <= 0) {
                 $error = 'Projet invalide.';
             } else {
+                 // Manually delete relations first (since no CASCADE in schema provided)
+                 $stmt = $pdo->prepare('DELETE FROM project_skill WHERE project_id = :id');
+                 $stmt->execute([':id' => $idProject]);
+
                 $stmt = $pdo->prepare('DELETE FROM project WHERE id_project = :id');
                 $stmt->execute([':id' => $idProject]);
                 $notice = 'Projet supprimé.';
@@ -129,13 +199,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$projects = $pdo->query('SELECT id_project, title, description, link_url, image_url, skill_list FROM project ORDER BY id_project DESC')->fetchAll();
+$sqlProjects = <<<SQL
+SELECT
+    p.id_project,
+    p.title,
+    p.description,
+    p.link_url,
+    p.image_url,
+    GROUP_CONCAT(s.name SEPARATOR ',') AS skill_list
+FROM project p
+LEFT JOIN project_skill ps ON p.id_project = ps.project_id
+LEFT JOIN skill s ON ps.skill_id = s.id_skill
+GROUP BY p.id_project
+ORDER BY p.id_project DESC
+SQL;
+$projects = $pdo->query($sqlProjects)->fetchAll();
+
 $messages = $pdo->query('SELECT id_message, email, subject, message, is_read FROM contact_message ORDER BY id_message DESC')->fetchAll();
 
 $editId = (int)($_GET['edit_project'] ?? 0);
 $projectToEdit = null;
 if ($editId > 0) {
-    $stmt = $pdo->prepare('SELECT id_project, title, description, link_url, image_url, skill_list FROM project WHERE id_project = :id');
+    $sqlEdit = <<<SQL
+SELECT
+    p.id_project,
+    p.title,
+    p.description,
+    p.link_url,
+    p.image_url,
+    GROUP_CONCAT(s.name SEPARATOR ',') AS skill_list
+FROM project p
+LEFT JOIN project_skill ps ON p.id_project = ps.project_id
+LEFT JOIN skill s ON ps.skill_id = s.id_skill
+WHERE p.id_project = :id
+GROUP BY p.id_project
+SQL;
+    $stmt = $pdo->prepare($sqlEdit);
     $stmt->execute([':id' => $editId]);
     $projectToEdit = $stmt->fetch();
 }

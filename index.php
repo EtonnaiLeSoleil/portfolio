@@ -10,7 +10,21 @@ $pdo = db();
 $user = $pdo->query('SELECT job_title, bio, cv_url FROM user ORDER BY id_user ASC LIMIT 1')->fetch();
 
 // Projets
-$projects = $pdo->query('SELECT id_project, title, description, link_url, image_url, skill_list FROM project ORDER BY id_project DESC')->fetchAll();
+$sqlProjects = <<<SQL
+SELECT
+    p.id_project,
+    p.title,
+    p.description,
+    p.link_url,
+    p.image_url,
+    GROUP_CONCAT(s.name SEPARATOR ',') AS skill_list
+FROM project p
+LEFT JOIN project_skill ps ON p.id_project = ps.project_id
+LEFT JOIN skill s ON ps.skill_id = s.id_skill
+GROUP BY p.id_project
+ORDER BY p.id_project DESC
+SQL;
+$projects = $pdo->query($sqlProjects)->fetchAll();
 
 $notice = null;
 $error = null;

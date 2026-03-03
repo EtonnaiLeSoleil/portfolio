@@ -50,11 +50,28 @@
                 </li>
             <?php endif; ?>
           </ul>
-          <div class="header__main-ham-menu-cont">
+          <div class="header__main-ham-menu-cont" id="mobile-menu-btn">
             <!-- Mobile Menu Icon (Simplified) -->
             <div style="font-size: 2rem; cursor: pointer; color: white;">&#9776;</div>
           </div>
         </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="header__sm-menu" id="mobile-menu">
+        <ul class="header__sm-menu-links" style="list-style: none; padding: 0; margin: 0;">
+          <?php if (isset($navLinks) && is_array($navLinks)): ?>
+              <?php foreach ($navLinks as $link): ?>
+              <li class="header__sm-menu-link">
+                <a href="<?= e($link['href']); ?>"><?= e($link['label']); ?></a>
+              </li>
+              <?php endforeach; ?>
+          <?php else: ?>
+              <li class="header__sm-menu-link">
+                <a href="index.php">Accueil</a>
+              </li>
+          <?php endif; ?>
+        </ul>
       </div>
     </header>
 
@@ -98,5 +115,24 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('header__sm-menu--active');
+        });
+        
+        // Fermer le menu au clic sur un lien
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('header__sm-menu--active');
+          });
+        });
+      }
+    </script>
 </body>
 </html>

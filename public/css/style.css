@@ -600,7 +600,7 @@ textarea {
   .header__main-ham-menu-close {
     width: 100%; }
   .header__sm-menu {
-    background: #e3dac9;
+    background: #000;
     position: absolute;
     width: 100%;
     top: 100%;
@@ -622,9 +622,9 @@ textarea {
     text-decoration: none;
     padding: 2.5rem 3rem;
     font-size: 1.6rem;
-    color: #666;
-    text-align: right;
-    border-bottom: 1px solid #e3dac9;
+    color: #fff;
+    text-align: center;
+    border-bottom: 1px solid #333;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -632,7 +632,7 @@ textarea {
     .header__sm-menu-link a:hover {
       color: #0062b9; }
   .header__sm-menu-link:first-child a {
-    border-top: 1px solid #e3dac9; }
+    border-top: 1px solid #333; }
   .header__sm-menu-link-last {
     border-bottom: 0; }
 

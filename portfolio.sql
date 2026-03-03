@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : jeu. 26 fév. 2026 à 18:39
+-- Généré le : mar. 03 mars 2026 à 00:01
 -- Version du serveur : 8.0.40
 -- Version de PHP : 8.3.14
 
@@ -57,7 +57,7 @@ INSERT INTO `project` (`id_project`, `title`, `description`, `link_url`, `image_
 (1, 'CChat', 'J\'apprends le langage C et j\'ai réalisé CChat comme projet fil rouge pour mettre en pratique les concepts fondamentaux : programmation réseau avec sockets TCP, gestion des threads, synchronisation, gestion manuelle de la mémoire et conception d\'un protocole de messages simple. Le projet comprend un serveur multi‑clients capable de diffuser des messages, gérer des salons, supporter des messages privés et des commandes basiques. C\'est mon projet final en C visant à démontrer la maîtrise des aspects systèmes et des bonnes pratiques de développement en C.', 'https://github.com/EtonnaiLeSoleil/CChat', NULL),
 (2, 'Habibiatore', 'Habibiatore est un jeu de type Akinator qui devine des planètes du système solaire à partir d\'une série de questions. L\'interface web (PHP/HTML/CSS) pose des questions adaptées, collecte les réponses et utilise une logique simple d\'apprentissage pour améliorer ses prédictions. Le projet inclut la gestion des sessions de jeu, le calcul d\'un score de confiance pour la prédiction et une base de connaissances enrichie au fil des parties.', 'https://github.com/EtonnaiLeSoleil/Habibiatore', NULL),
 (3, 'APIcollaboratifs', 'Crée une API pour gérer des projets d\'équipes cross-fonctionnelles. Chaque projet a un organizer, des members aux rôles variés et un cahier des charges PDF ajouté à la création. Accès via JWT. Stockage en mémoire : chaque projet contient ses membres.', 'https://github.com/EtonnaiLeSoleil/APIcollaboratifs', 'https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg'),
-(4, 'Waspail Demo', 'Waspail Demo est un réseau social mobile réalisé dans le cadre d’un examen d’une durée de 4 jours. L’application propose une interface interactive permettant de simuler les principales fonctionnalités d’un réseau social (navigation, affichage de contenu et interactions utilisateur) à travers une approche moderne front/back en JavaScript/TypeScript.', 'https://github.com/TysRzo/Waspail-Demo', 'img/icon.png');
+(4, 'Waspail Demo', 'Waspail Demo est un réseau social mobile réalisé dans le cadre d’un examen d’une durée de 4 jours. L’application propose une interface interactive permettant de simuler les principales fonctionnalités d’un réseau social (navigation, affichage de contenu et interactions utilisateur) à travers une approche moderne front/back en JavaScript/TypeScript.', 'https://github.com/TysRzo/Waspail-Demo', './img/icon.png');
 
 -- --------------------------------------------------------
 
@@ -84,8 +84,7 @@ INSERT INTO `project_skill` (`project_id`, `skill_id`) VALUES
 (2, 7),
 (4, 8),
 (2, 9),
-(4, 10),
-(1, 16);
+(4, 10);
 
 -- --------------------------------------------------------
 
@@ -135,7 +134,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `email`, `password_hash`, `job_title`, `bio`, `cv_url`) VALUES
-(1, 'Admin@admin.admin', '$2y$10$Nm4uBY8UUGu6Sx0hrMHB4uAoRsaAbHof6cO15m1L8YW9JI4R/dwrm', 'Développeur Full Stack', 'Étudiant de 19 ans en seconde année d\'informatique à la 3W Academy en France.\r\nMes études me permettent d\'apprendre le métier de Développeur Full Stack. À l\'avenir, j\'aspire à évoluer dans les domaines de la cybersécurité et data.', 'Antoine-Gouet-CVG.pdf');
+(1, 'Admin@admin.admin', '$2y$10$Nm4uBY8UUGu6Sx0hrMHB4uAoRsaAbHof6cO15m1L8YW9JI4R/dwrm', 'Développeur Full Stack', 'Bonjour ! Je m’appelle Antoine Gouet, je suis un développeur web full stack, actuellement en deuxième année de Bachelor Informatique à la 3W Academy.\r\n\r\nMa spécificité est de pouvoir concevoir des projets web de A à Z. Je commence par l\'analyse des besoins pour définir la solution la plus adaptée, je poursuis avec la conception technique et le design, puis j\'assure le développement complet (front-end et back-end) et la mise en ligne.\r\n\r\nAu-delà de la création d\'applications performantes, je porte un intérêt croissant aux enjeux de la cybersécurité et de l\'analyse de données, que j\'intègre progressivement dans ma pratique pour créer des outils non seulement fonctionnels, mais aussi robustes et sécurisés. Je peux ainsi vous accompagner sur toutes les étapes techniques de votre projet digital.', 'Antoine-Gouet-CVG.pdf');
 
 --
 -- Index pour les tables déchargées
@@ -188,7 +187,7 @@ ALTER TABLE `contact_message`
 -- AUTO_INCREMENT pour la table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id_project` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_project` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `skill`

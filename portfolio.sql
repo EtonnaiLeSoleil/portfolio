@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
--- Généré le : mar. 03 mars 2026 à 00:01
--- Version du serveur : 8.0.40
--- Version de PHP : 8.3.14
+-- Hôte : db
+-- Généré le : mar. 03 mars 2026 à 01:17
+-- Version du serveur : 8.0.45
+-- Version de PHP : 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,7 +55,7 @@ CREATE TABLE `project` (
 
 INSERT INTO `project` (`id_project`, `title`, `description`, `link_url`, `image_url`) VALUES
 (1, 'CChat', 'J\'apprends le langage C et j\'ai réalisé CChat comme projet fil rouge pour mettre en pratique les concepts fondamentaux : programmation réseau avec sockets TCP, gestion des threads, synchronisation, gestion manuelle de la mémoire et conception d\'un protocole de messages simple. Le projet comprend un serveur multi‑clients capable de diffuser des messages, gérer des salons, supporter des messages privés et des commandes basiques. C\'est mon projet final en C visant à démontrer la maîtrise des aspects systèmes et des bonnes pratiques de développement en C.', 'https://github.com/EtonnaiLeSoleil/CChat', NULL),
-(2, 'Habibiatore', 'Habibiatore est un jeu de type Akinator qui devine des planètes du système solaire à partir d\'une série de questions. L\'interface web (PHP/HTML/CSS) pose des questions adaptées, collecte les réponses et utilise une logique simple d\'apprentissage pour améliorer ses prédictions. Le projet inclut la gestion des sessions de jeu, le calcul d\'un score de confiance pour la prédiction et une base de connaissances enrichie au fil des parties.', 'https://github.com/EtonnaiLeSoleil/Habibiatore', NULL),
+(2, 'Habibiatore', 'Habibiatore est un jeu de type Akinator qui devine des planètes du système solaire à partir d\'une série de questions. L\'interface web (PHP/HTML/CSS) pose des questions adaptées, collecte les réponses et utilise une logique simple d\'apprentissage pour améliorer ses prédictions. Le projet inclut la gestion des sessions de jeu, le calcul d\'un score de confiance pour la prédiction et une base de connaissances enrichie au fil des parties.', 'https://github.com/EtonnaiLeSoleil/Habibiatore', 'https://www.jeux-gratuits.com/main/picture_apps/67b72e6d8ce4c.png'),
 (3, 'APIcollaboratifs', 'Crée une API pour gérer des projets d\'équipes cross-fonctionnelles. Chaque projet a un organizer, des members aux rôles variés et un cahier des charges PDF ajouté à la création. Accès via JWT. Stockage en mémoire : chaque projet contient ses membres.', 'https://github.com/EtonnaiLeSoleil/APIcollaboratifs', 'https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg'),
 (4, 'Waspail Demo', 'Waspail Demo est un réseau social mobile réalisé dans le cadre d’un examen d’une durée de 4 jours. L’application propose une interface interactive permettant de simuler les principales fonctionnalités d’un réseau social (navigation, affichage de contenu et interactions utilisateur) à travers une approche moderne front/back en JavaScript/TypeScript.', 'https://github.com/TysRzo/Waspail-Demo', './img/icon.png');
 
